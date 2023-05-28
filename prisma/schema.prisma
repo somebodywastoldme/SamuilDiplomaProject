@@ -10,104 +10,23 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  text      String
-  // To return `Date`s intact through the API we use transformers
-  // https://trpc.io/docs/data-transformers
-  // This is unique so it can be used for cursor-based pagination
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-}
-
-model Hostel {
-  id                Int              @id @default(autoincrement())
-  name              String
-  address           String
-  rooms             Room[]
-  floors            Floor[]
-  caretaker         HostelCaretaker? @relation(fields: [hostelCaretakerId], references: [id])
-  hostelCaretakerId Int?
-}
-
-model Room {
-  id         Int       @id @default(autoincrement())
-  roomNumber String
-  capacity   Int
-  occupancy  Int
-  hostel     Hostel    @relation(fields: [hostelId], references: [id])
-  hostelId   Int
-  students   Student[]
-  floor      Floor @relation(fields: [floorId], references: [id])
-  floorId    Int 
-}
-
-model HostelCaretaker {
-  id          Int       @id @default(autoincrement())
-  firstName   String
-  lastName    String
-  phoneNumber String
-  email       String    @unique
-  Hostel      Hostel[]
-  Student     Student[]
-}
-
-model Floor {
-  id       Int    @id @default(autoincrement())
-  name     String
-  hostel   Hostel @relation(fields: [hostelId], references: [id])
-  hostelId Int
-  rooms    Room[]
-}
-
-model Student {
-  id                Int              @id @default(autoincrement())
-  firstName         String           
-  lastName          String
-  email             String           @unique
-  phoneNumber       String
-  address           String
-  gender            String
-  dateOfBirth       DateTime
-  submission        Submission[]
-  photos            Photo[]
-  room              Room?            @relation(fields: [roomId], references: [id])
-  roomId            Int?
-  caretaker         HostelCaretaker? @relation(fields: [hostelCaretakerId], references: [id])
-  hostelCaretakerId Int?
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  documents Document[]
 }
 
 model Document {
-  id             Int         @id @default(dbgenerated("serial"))
-  name           String
-  isRequired     Boolean
-  isCompleted    Boolean
-  documentBody   String?
-  typeDocument   TypeDocument @relation(fields: [typeDocumentId], references: [id])
-  typeDocumentId Int
-  submission     Submission?
-}
-
-model Photo {
-  id        Int     @id @default(autoincrement())
-  student   Student @relation(fields: [studentId], references: [id])
-  studentId Int
-  imageBody String?
-}
-
-model Submission {
-  id          Int       @id @default(dbgenerated("serial"))
-  student     Student   @relation(fields: [studentId], references: [id])
-  studentId   Int
-  document    Document  @relation(fields: [documentId], references: [id])
-  documentId  Int       @unique
-  isSubmitted Boolean
-  submittedAt DateTime?
-}
-
-model TypeDocument {
-  id       Int        @id @default(autoincrement())
-  name     String
-  Document Document[]
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  file        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    Int
 }
