@@ -2,9 +2,9 @@ import { FC, useState, useEffect, useRef } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Button, Grid, TextField } from '@material-ui/core';
 import { Autocomplete } from '@mui/material';
-import { trpc } from '~/utils/trpc';
+import { trpc } from '@utils/trpc';
 import { Room, Floor } from '@prisma/client';
-import { HostelSelection } from '~/server/routers/hostel';
+import { HostelSelection } from '@server//routers/hostel';
 import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme: Theme) =>

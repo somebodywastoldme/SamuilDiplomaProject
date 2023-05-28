@@ -2,7 +2,7 @@ import { router, publicProcedure } from '../trpc';
 import { Prisma } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { prisma } from '~/server/prisma';
+import { prisma } from '@server//prisma';
 
 const defaultStudentSelect = Prisma.validator<Prisma.StudentSelect>()({
   id: true,

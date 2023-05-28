@@ -1,10 +1,10 @@
-import { ChangeEvent, ChangeEventHandler, FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import { find, map } from 'lodash'
-import { SubmissionSelect } from '~/server/routers/submission';
+import { SubmissionSelect } from '@server//routers/submission';
 import { ReactSVG } from 'react-svg'
-import { TypeOfDocument } from '~/server/routers/typeDocument';
+import { TypeOfDocument } from '@server//routers/typeDocument';
 import CheckBox from 'react-animated-checkbox';
-import { trpc } from '~/utils/trpc';
+import { trpc } from '@utils/trpc';
 
 interface ISubmissionListProps {
     submissions: SubmissionSelect[];

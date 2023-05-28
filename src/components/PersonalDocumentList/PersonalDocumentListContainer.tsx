@@ -1,9 +1,9 @@
 import { Button } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { SubmissionSelect } from '~/server/routers/submission';
-import { TypeOfDocument } from '~/server/routers/typeDocument';
-import { trpc } from '~/utils/trpc';
+import { SubmissionSelect } from '@server/routers/submission';
+import { TypeOfDocument } from '@server/routers/typeDocument';
+import { trpc } from '@utils/trpc';
 import Switch from '@mui/material/Switch';
 import SubmissionListProps from '../common/SubmissionList';
 

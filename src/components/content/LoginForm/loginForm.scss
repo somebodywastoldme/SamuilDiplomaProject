@@ -1,0 +1,17 @@
+.loginContainer{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    background-color: #FFFFFF;
+    padding: 8px;
+    box-shadow: 2px 4px 12px 0px #312E5026;
+    min-width: 600px;
+    min-height: 400px;
+    border-radius: 8px;
+    flex: 0 1 auto;
+
+    .title {
+      font-size: 24px;
+      text-align: center
+    }
+  }

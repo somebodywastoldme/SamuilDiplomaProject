@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { SuccessfulResultType } from '~/server/routers/student';
-import { trpc } from '~/utils/trpc';
+import { SuccessfulResultType } from '@server//routers/student';
+import { trpc } from '@utils/trpc';
 
 interface ISuccessfulResult {
     personId: number;

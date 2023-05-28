@@ -15,7 +15,7 @@
     "dx:next": "run-s migrate-sqlite generate-sqlite db-seed && next dev",
     "dx:prisma-studio": "pnpm prisma-studio-sqlite",
     "dx": "run-p dx:* --print-label",
-    "dev": "yarn dx:next",
+    "dev": "npm run dx:next",
     "devSam": "next dev",
     "prep-sqlite": "run-s generate-sqlite migrate-sqlite",
     "build-sqlite": "next build",
@@ -57,7 +57,7 @@
     "next": "^13.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-svg": "^16.1.5",
+    "react-svg": "^16.1.14",
     "superjson": "^1.7.4",
     "zod": "^3.0.0"
   },

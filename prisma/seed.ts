@@ -322,33 +322,33 @@ const submissions = [
   }
 ]
 async function main() {
-  await prisma.student.createMany({
-    data: students
-  });
-  await prisma.typeDocument.createMany({
-    data: typeDocument
-  });
-  await prisma.hostelCaretaker.createMany({
-    data: HostelCaretaker
-  })
-  await prisma.hostel.createMany({
-    data: hostels
-  });
-  await prisma.floor.createMany({
-    data: floors
-  });
-  await prisma.room.createMany({
-    data: rooms
-  });
-  await prisma.document.createMany({
-    data: documents
-  });
-  await prisma.submission.createMany({
-    data: submissions
-  });
-  await prisma.photo.createMany({
-    data: photos
-  });
+  // await prisma.student.createMany({
+  //   data: students
+  // });
+  // await prisma.typeDocument.createMany({
+  //   data: typeDocument
+  // });
+  // await prisma.hostelCaretaker.createMany({
+  //   data: HostelCaretaker
+  // })
+  // await prisma.hostel.createMany({
+  //   data: hostels
+  // });
+  // await prisma.floor.createMany({
+  //   data: floors
+  // });
+  // await prisma.room.createMany({
+  //   data: rooms
+  // });
+  // await prisma.document.createMany({
+  //   data: documents
+  // });
+  // await prisma.submission.createMany({
+  //   data: submissions
+  // });
+  // await prisma.photo.createMany({
+  //   data: photos
+  // });
 }
 
 main()

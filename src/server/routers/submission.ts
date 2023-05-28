@@ -1,7 +1,7 @@
 import { router, publicProcedure } from '../trpc';
 import { Prisma } from '@prisma/client';
 import { z } from 'zod';
-import { prisma } from '~/server/prisma';
+import { prisma } from '@server//prisma';
 
 
 const defaultSubmissionSelect = Prisma.validator<Prisma.SubmissionSelect>()({

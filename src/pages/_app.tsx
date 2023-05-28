@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import type { AppType, AppProps } from 'next/app';
 import type { ReactElement, ReactNode } from 'react';
-import { DefaultLayout } from '~/components/DefaultLayout';
-import { trpc } from '~/utils/trpc';
+import { DefaultLayout } from '@components/DefaultLayout'
+import { trpc } from '@utils/trpc'
 
 import './defaultLayout.scss';
 import '../components/PersonalDocumentList/personDocumentList.scss';

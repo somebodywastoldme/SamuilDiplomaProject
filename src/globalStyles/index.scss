@@ -1,0 +1,63 @@
+
+@font-face {
+    font-family: 'e-Ukraine-Bold';
+    src: url('./../../public/fonts/e-Ukraine-Bold.otf') format('truetype');;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'e-Ukraine-Light';
+    src: url('./../../public/fonts/e-Ukraine-Light.otf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'e-Ukraine-Medium';
+    src: url('./../../public/fonts/e-Ukraine-Medium.otf') format('truetype');
+    
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'e-Ukraine-Regular';
+    src: url('./../../public/fonts/e-Ukraine-Regular.otf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'e-Ukraine-Thin';
+    src: url('./../../public/fonts/e-Ukraine-Thin.otf') format('truetype');
+    font-weight: 300;
+    font-style: unset;
+  }
+  
+  @font-face {
+    font-family: 'e-Ukraine-UltraLight';
+    src: url('./../../public/fonts/e-Ukraine-UltraLight.otf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  body {
+    margin: 0;
+    font-family: 'e-Ukraine-Light' !important;
+  }
+  .MuiTypography-root {
+    font-family: 'e-Ukraine-Light' !important;
+  }
+  .mainPageContainer {
+    display: flex;
+    background-color: #F4F5F7;
+    height: 100vh;
+    width: 100%;
+  }
+  #root {
+    display: flex;
+    background-color: #F4F5F7;
+    height: 100%;
+    width: 100%;
+  }
