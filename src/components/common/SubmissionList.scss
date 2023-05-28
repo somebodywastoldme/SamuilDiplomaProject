@@ -1,0 +1,33 @@
+.submissionItemContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 60px;
+    align-items: center;
+    gap: 5px;
+
+    .docBlock {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .controls {
+        display: flex;
+        gap: 8px;
+        margin-right: 10px;
+
+        .fileInput {
+            cursor: pointer;
+        }
+    }
+}
+
+.submissionItem {
+    display: flex;
+}
+
+.submissionsContainer {
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+}

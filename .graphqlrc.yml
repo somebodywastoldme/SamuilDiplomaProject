@@ -1,0 +1,7 @@
+projects:
+  app:
+    schema: schema/generated/apolloExtendedGraphQlScheme.graphql
+    documents: App/**/*.graphql
+    extensions:
+      languageService:
+        useSchemaFileDefinitions: true
