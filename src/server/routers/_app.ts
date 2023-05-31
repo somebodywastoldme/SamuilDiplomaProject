@@ -6,8 +6,7 @@ import { publicProcedure, router } from '../trpc';
 
 
 export const appRouter = router({
-  healthcheck: publicProcedure.query(() => 'yay!'),
-  user: userRouter
+  user: userRouter,
 });
 
 export type AppRouter = typeof appRouter;

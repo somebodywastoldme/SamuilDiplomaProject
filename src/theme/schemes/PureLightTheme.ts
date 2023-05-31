@@ -1,5 +1,5 @@
 import { alpha, createTheme, lighten, darken } from '@mui/material';
-import '@mui/lab/themeAugmentation';
+import type {} from  '@mui/lab/themeAugmentation';
 
 const themeColors = {
   primary: '#5569ff',

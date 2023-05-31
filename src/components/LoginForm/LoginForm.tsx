@@ -29,7 +29,7 @@ const LoginForm: FC = () => {
 
 	const handleLogIn = (user: User): void => {
 		dispatch(setUser(user))
-		router.push('/listDocuments/1');
+		router.push('/dashboard');
 	};
 
 	return(
