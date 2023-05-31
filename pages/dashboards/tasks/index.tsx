@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useEffect } from 'react';
 import PageHeader from '@/content/Dashboards/Tasks/PageHeader';
 import Footer from '@/components/Footer';
 import {
@@ -19,6 +19,8 @@ import DocumentGrid from '@/components/DocumentGrid/DocumentGrid';
 import { trpc } from '@utils/trpc';
 import { useSelector } from 'react-redux';
 import { IApplicationState } from '@/reducers';
+import { SentCardGridType } from '@/server/routers/sentCardRouter';
+import { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 
 const TabsContainerWrapper = styled(Box)(
@@ -103,27 +105,92 @@ const TabsContainerWrapper = styled(Box)(
   `
 );
 
+const tabs = [
+  { value: 'entryDoc', label: 'Вхідні документи' },
+  { value: 'sentDoc', label: 'Вихідні документи' }
+];
+
+const columns: GridColDef[] = [
+  {
+    field: 'id',
+    headerName: '№',
+    width: 50,
+    editable: false,
+  },
+  {
+    field: 'senderFullName',
+    headerName: 'Відправник',
+    sortable: false,
+    width: 160,
+    valueGetter: (params: GridValueGetterParams) =>
+      `${params.row.sender.name || ''} ${params.row.sender.surname || ''}`,
+  },
+  {
+    field: 'recipientFullName',
+    headerName: 'Отримувач',
+    sortable: false,
+    width: 160,
+    valueGetter: (params: GridValueGetterParams) =>
+      `${params.row.recipient.name || ''} ${params.row.recipient.surname || ''}`,
+  },
+  {
+    field: 'documentName',
+    headerName: 'Назва документу',
+    sortable: false,
+    width: 250, 
+    valueGetter: (params: GridValueGetterParams) =>
+      `${params.row.card.documents[0].fileName || ''}`,
+  },
+  {
+    field: 'documentDesciption',
+    headerName: 'Опис документу',
+    sortable: false,
+    width: 250,
+    valueGetter: (params: GridValueGetterParams) =>
+      `${params.row.card.documents[0].description || ''}`,
+  },
+  {
+    field: 'recive',
+    headerName: 'Одержано',
+    sortable: false,
+    width: 160,
+    valueGetter: (params: GridValueGetterParams) =>
+      `${params.row.createdAt}`,
+  },
+];
 function DashboardTasks() {
 	const utils = trpc.useContext();
 
   const user = useSelector((state: IApplicationState) => state.userSlice.user);
 
   const [currentTab, setCurrentTab] = useState<string>('entryDoc');
+  const [recipientCards, setRecipientCards] = useState<SentCardGridType[]>();
+  const [sendedCards, setSendedCards] = useState<SentCardGridType[]>();
 
 
-  const tabs = [
-    { value: 'entryDoc', label: 'Вхідні документи' },
-    { value: 'sentDoc', label: 'Вихідні документи' }
-  ];
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
   };
 
-  if (user) {
-    const data = utils.sentCard.list.fetch({ recipientId: user.id })
-    console.log( data)
+  const fetchRecipientCards = async (): Promise<void> => {
+    const data = await utils.sentCard.recipientCards.fetch({ recipientId: user.id })
+    setRecipientCards(data);
   }
+
+  const fetchSendedCards = async (): Promise<void> => {
+    const data = await utils.sentCard.sendedCards.fetch({ senderId: user.id })
+    setSendedCards(data);
+  }
+  
+  useEffect(() => {
+    if (!recipientCards) {
+      void fetchRecipientCards();
+    }
+    if (!sendedCards) {
+      void fetchSendedCards();
+    }
+  }, []);
   
   return (
     <>
@@ -160,7 +227,7 @@ function DashboardTasks() {
               <>
                 <Grid item xs={12}>
                 <Box p={4}>
-                  <DocumentGrid rows={[]} cols={[]}/>
+                  <DocumentGrid rows={recipientCards} cols={columns}/>
                 </Box>
                 </Grid>
               </>
@@ -168,7 +235,7 @@ function DashboardTasks() {
             {currentTab === 'sentDoc' && (
               <Grid item xs={12}>
                 <Box p={4}>
-                  <TaskSearch />
+                  <DocumentGrid rows={sendedCards} cols={columns}/>
                 </Box>
               </Grid>
             )}

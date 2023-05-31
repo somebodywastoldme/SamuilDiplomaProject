@@ -31,8 +31,10 @@ const defaultSentCardSelect = Prisma.validator<Prisma.SentCardSelect>() ({
   createdAt: true
 });
 
+export type SentCardGridType  =  Prisma.SentCardGetPayload<{ select: typeof defaultSentCardSelect }>
+
 export const sentCardRouter = router({
-  list: publicProcedure
+  recipientCards: publicProcedure
     .input(
         z.object({
             recipientId: z.number(),
@@ -42,6 +44,20 @@ export const sentCardRouter = router({
         const { recipientId } = input;
         const user = await prisma.sentCard.findMany({
         where: { recipientId },
+        select: defaultSentCardSelect,
+        });
+        return user;
+  }),
+  sendedCards: publicProcedure
+    .input(
+        z.object({
+          senderId: z.number(),
+        }),
+    )
+    .query(async ({ input }) => {
+        const { senderId } = input;
+        const user = await prisma.sentCard.findMany({
+        where: { senderId },
         select: defaultSentCardSelect,
         });
         return user;
