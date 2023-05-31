@@ -13,7 +13,10 @@ import createEmotionCache from 'src/createEmotionCache';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { reduxStore, persistor } from '@store/configureStore';
+import { trpc } from '@utils/trpc';
 const clientSideEmotionCache = createEmotionCache();
 
 type NextPageWithLayout = NextPage & {
@@ -25,7 +28,7 @@ interface TokyoAppProps extends AppProps {
   Component: NextPageWithLayout;
 }
 
-function TokyoApp(props: TokyoAppProps) {
+function MyApp(props: TokyoAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page) => page);
 
@@ -46,7 +49,11 @@ function TokyoApp(props: TokyoAppProps) {
         <ThemeProvider>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <CssBaseline />
-            {getLayout(<Component {...pageProps} />)}
+            <Provider store={reduxStore}>
+              <PersistGate loading={null} persistor={persistor}>
+                {getLayout(<Component {...pageProps} />)}
+              </PersistGate>
+            </Provider>
           </LocalizationProvider>
         </ThemeProvider>
       </SidebarProvider>
@@ -54,4 +61,4 @@ function TokyoApp(props: TokyoAppProps) {
   );
 }
 
-export default TokyoApp;
+export default trpc.withTRPC(MyApp);
