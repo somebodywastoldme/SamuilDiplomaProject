@@ -4,8 +4,8 @@ import '@mui/lab/themeAugmentation';
 // import i18n from 'src/i18n/i18n';
 
 const themeColors = {
-  primary: '#5569ff',
-  secondary: '#6E759F',
+  primary: '#9b52e1',
+  secondary: '#000',
   success: '#57CA22',
   warning: '#FFA319',
   error: '#FF1943',
@@ -44,27 +44,26 @@ const colors = {
       '0px 1px 4px rgba(85, 105, 255, 0.25), 0px 3px 12px 2px rgba(85, 105, 255, 0.35)',
     warning:
       '0px 1px 4px rgba(255, 163, 25, 0.25), 0px 3px 12px 2px rgba(255, 163, 25, 0.35)',
-    card: '0px 9px 16px rgba(159, 162, 191, .18), 0px 2px 2px rgba(159, 162, 191, 0.32)',
-    cardSm:
-      '0px 2px 3px rgba(159, 162, 191, .18), 0px 1px 1px rgba(159, 162, 191, 0.32)',
+    card: '0px 0px 1px 1px #d5d0d6',
+    cardSm: '0px 0px 1px 1px #d5d0d6',
     cardLg:
       '0 5rem 14rem 0 rgb(255 255 255 / 30%), 0 0.8rem 2.3rem rgb(0 0 0 / 60%), 0 0.2rem 0.3rem rgb(0 0 0 / 45%)'
   },
   layout: {
     general: {
-      bodyBg: '#f2f5f9'
+      bodyBg: '#fff'
     },
     sidebar: {
-      background: themeColors.white,
+      background: '#fcfbfc',
       textColor: themeColors.secondary,
       dividerBg: '#f2f5f9',
-      menuItemColor: '#242E6F',
-      menuItemColorActive: themeColors.primary,
-      menuItemBg: themeColors.white,
-      menuItemBgActive: '#f2f5f9',
-      menuItemIconColor: lighten(themeColors.secondary, 0.3),
-      menuItemIconColorActive: themeColors.primary,
-      menuItemHeadingColor: darken(themeColors.secondary, 0.3)
+      menuItemColor: themeColors.black,
+      menuItemColorActive: '#00b795',
+      menuItemBg: '#fff',
+      menuItemBgActive: '#f2fbfa',
+      menuItemIconColor: lighten(themeColors.secondary, 0.5),
+      menuItemIconColorActive: '#00b795',
+      menuItemHeadingColor: themeColors.black
     }
   },
   alpha: {
@@ -131,7 +130,7 @@ const colors = {
   }
 };
 
-export const PureLightTheme = createTheme({
+export const PurpleFlowTheme = createTheme({
   // direction: i18n.dir(),
   colors: {
     gradients: {
@@ -224,13 +223,13 @@ export const PureLightTheme = createTheme({
   },
   general: {
     reactFrameworkColor: '#00D8FF',
-    borderRadiusSm: '6px',
-    borderRadius: '10px',
-    borderRadiusLg: '12px',
-    borderRadiusXl: '16px'
+    borderRadiusSm: '4px',
+    borderRadius: '6px',
+    borderRadiusLg: '10px',
+    borderRadiusXl: '18px'
   },
   sidebar: {
-    background: colors.layout.sidebar.background,
+    background: '#fff',
     textColor: colors.layout.sidebar.textColor,
     dividerBg: colors.layout.sidebar.dividerBg,
     menuItemColor: colors.layout.sidebar.menuItemColor,
@@ -240,15 +239,14 @@ export const PureLightTheme = createTheme({
     menuItemIconColor: colors.layout.sidebar.menuItemIconColor,
     menuItemIconColorActive: colors.layout.sidebar.menuItemIconColorActive,
     menuItemHeadingColor: colors.layout.sidebar.menuItemHeadingColor,
-    boxShadow:
-      '2px 0 3px rgba(159, 162, 191, .18), 1px 0 1px rgba(159, 162, 191, 0.32)',
+    boxShadow: '1px 1px 1px 0 #e0e0e0',
     width: '290px'
   },
   header: {
     height: '80px',
-    background: colors.alpha.white[100],
-    boxShadow: colors.shadows.cardSm,
-    textColor: colors.secondary.main
+    background: '#fbf9fb',
+    boxShadow: '0 1px 1px #e0e0e0',
+    textColor: themeColors.black
   },
   spacing: 9,
   palette: {
@@ -590,7 +588,7 @@ export const PureLightTheme = createTheme({
     },
     MuiButton: {
       defaultProps: {
-        disableRipple: true
+        disableRipple: false
       },
       styleOverrides: {
         root: {
@@ -652,7 +650,7 @@ export const PureLightTheme = createTheme({
     },
     MuiToggleButton: {
       defaultProps: {
-        disableRipple: true
+        disableRipple: false
       },
       styleOverrides: {
         root: {
@@ -670,11 +668,11 @@ export const PureLightTheme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
-          padding: 8,
+          borderRadius: 6,
+          padding: 6,
 
           '& .MuiTouchRipple-root': {
-            borderRadius: 8
+            borderRadius: 6
           }
         },
         sizeSmall: {
@@ -1163,7 +1161,7 @@ export const PureLightTheme = createTheme({
     }
   },
   shape: {
-    borderRadius: 10
+    borderRadius: 6
   },
   typography: {
     fontFamily:
