@@ -26,7 +26,8 @@
       "@components/*": ["src/components/*"],
       "@utils/*": ["src/utils/*"],
       "@server/*": ["src/server/*"],
-      "@pages/*": ["src/pages/*"]
+      "@pages/*": ["src/pages/*"],
+      "@models/*": ["src/models/*"]
     },
     "plugins": [
       {

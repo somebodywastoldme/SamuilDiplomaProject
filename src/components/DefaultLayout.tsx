@@ -10,7 +10,6 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         <title>Система поселення до гуртожитку</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main>
         <div className="mainPageContainer">
           {children}
