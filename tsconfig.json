@@ -10,10 +10,6 @@
       "@models/*": ["src/models/*"]
     },
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@/public/*": ["./public/*"]
-    },
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
