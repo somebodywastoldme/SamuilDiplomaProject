@@ -23,12 +23,12 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
-interface TokyoAppProps extends AppProps {
+interface SEDAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
 }
 
-function MyApp(props: TokyoAppProps) {
+function MyApp(props: SEDAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page) => page);
 

@@ -7,7 +7,9 @@
       "@utils/*": ["src/utils/*"],
       "@server/*": ["src/server/*"],
       "@pages/*": ["src/pages/*"],
-      "@models/*": ["src/models/*"]
+      "@models/*": ["src/models/*"],
+      "@store/*": ["src/Store/*"]
+
     },
     "baseUrl": ".",
     "allowJs": true,

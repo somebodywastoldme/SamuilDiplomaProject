@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { useRouter } from 'next/router';
 import { trpc } from '@utils/trpc';
-import { toString } from 'lodash';
 import Typography from '@mui/material/Typography';
 import { useDispatch } from 'react-redux';
 import { setUser } from 'src/reducers/UserSlice';
@@ -41,7 +40,7 @@ const LoginForm: FC = () => {
 
 	return(
 		<Box sx={{ minWidth: 275, margin: 'auto' }}>
-			<Card variant="outlined"  sx={{ backgroundColor: '#FFFFFF' }}>
+			<Card variant="outlined"  >
 				<CardContent>
 					<Container component="main" maxWidth="xs">
 						<h2 style={{textAlign: 'center'}}>Сисема електронного документо обігу</h2>

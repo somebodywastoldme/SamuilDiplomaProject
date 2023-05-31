@@ -18,7 +18,7 @@ function Footer() {
       >
         <Box>
           <Typography variant="subtitle1">
-            &copy; 2022 - Tokyo Free Black Next.js Typescript Admin Dashboard
+            &copy; 2023 - Система електронного документообігу
           </Typography>
         </Box>
         <Typography
@@ -27,13 +27,12 @@ function Footer() {
           }}
           variant="subtitle1"
         >
-          Crafted by{' '}
+          Створена{' '}
           <Link
-            href="https://bloomui.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            BloomUI.com
+            Сухомлин Самуіл Олегович
           </Link>
         </Typography>
       </Box>

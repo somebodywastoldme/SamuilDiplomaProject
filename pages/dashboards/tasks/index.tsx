@@ -7,7 +7,6 @@ import {
   Grid,
   Tab,
   Tabs,
-  Divider,
   Container,
   Card,
   Box,
@@ -15,14 +14,12 @@ import {
   styled
 } from '@mui/material';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
-
-import TeamOverview from '@/content/Dashboards/Tasks/TeamOverview';
-import TasksAnalytics from '@/content/Dashboards/Tasks/TasksAnalytics';
-import Performance from '@/content/Dashboards/Tasks/Performance';
-import Projects from '@/content/Dashboards/Tasks/Projects';
-import Checklist from '@/content/Dashboards/Tasks/Checklist';
-import Profile from '@/content/Dashboards/Tasks/Profile';
 import TaskSearch from '@/content/Dashboards/Tasks/TaskSearch';
+import DocumentGrid from '@/components/DocumentGrid/DocumentGrid';
+import { trpc } from '@utils/trpc';
+import { useSelector } from 'react-redux';
+import { IApplicationState } from '@/reducers';
+
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -107,23 +104,31 @@ const TabsContainerWrapper = styled(Box)(
 );
 
 function DashboardTasks() {
-  const theme = useTheme();
+	const utils = trpc.useContext();
 
-  const [currentTab, setCurrentTab] = useState<string>('analytics');
+  const user = useSelector((state: IApplicationState) => state.userSlice.user);
+
+  const [currentTab, setCurrentTab] = useState<string>('entryDoc');
+
 
   const tabs = [
-    { value: 'analytics', label: 'Analytics Overview' },
-    { value: 'taskSearch', label: 'Task Search' }
+    { value: 'entryDoc', label: 'Вхідні документи' },
+    { value: 'sentDoc', label: 'Вихідні документи' }
   ];
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
   };
 
+  if (user) {
+    const data = utils.sentCard.list.fetch({ recipientId: user.id })
+    console.log( data)
+  }
+  
   return (
     <>
       <Head>
-        <title>Tasks Dashboard</title>
+        <title>Головна</title>
       </Head>
       <PageTitleWrapper>
         <PageHeader />
@@ -151,66 +156,16 @@ function DashboardTasks() {
             alignItems="stretch"
             spacing={0}
           >
-            {currentTab === 'analytics' && (
+            {currentTab === 'entryDoc' && (
               <>
                 <Grid item xs={12}>
-                  <Box p={4}>
-                    <TeamOverview />
-                  </Box>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                  <Box
-                    p={4}
-                    sx={{
-                      background: `${theme.colors.alpha.black[5]}`
-                    }}
-                  >
-                    <Grid container spacing={4}>
-                      <Grid item xs={12} sm={6} md={8}>
-                        <TasksAnalytics />
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={4}>
-                        <Performance />
-                      </Grid>
-                    </Grid>
-                  </Box>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Box p={4}>
-                    <Projects />
-                  </Box>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    sx={{
-                      background: `${theme.colors.alpha.black[5]}`
-                    }}
-                  >
-                    <Grid container spacing={0}>
-                      <Grid item xs={12} md={6}>
-                        <Box
-                          p={4}
-                          sx={{
-                            background: `${theme.colors.alpha.white[70]}`
-                          }}
-                        >
-                          <Checklist />
-                        </Box>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <Box p={4}>
-                          <Profile />
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </Box>
+                <Box p={4}>
+                  <DocumentGrid rows={[]} cols={[]}/>
+                </Box>
                 </Grid>
               </>
             )}
-            {currentTab === 'taskSearch' && (
+            {currentTab === 'sentDoc' && (
               <Grid item xs={12}>
                 <Box p={4}>
                   <TaskSearch />
