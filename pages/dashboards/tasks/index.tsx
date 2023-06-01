@@ -3,25 +3,18 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 import { ChangeEvent, useState, useEffect } from 'react';
 import PageHeader from '@/content/Dashboards/Tasks/PageHeader';
 import Footer from '@/components/Footer';
-import {
-  Grid,
-  Tab,
-  Tabs,
-  Container,
-  Card,
-  Box,
-  useTheme,
-  styled
-} from '@mui/material';
+import { Grid, Tab, Tabs, Container, Card, Box, styled } from '@mui/material';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
-import TaskSearch from '@/content/Dashboards/Tasks/TaskSearch';
 import DocumentGrid from '@/components/DocumentGrid/DocumentGrid';
 import { trpc } from '@utils/trpc';
 import { useSelector } from 'react-redux';
 import { IApplicationState } from '@/reducers';
 import { SentCardGridType } from '@/server/routers/sentCardRouter';
 import { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-
+import moment from 'moment';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { setCard } from 'src/reducers/CardSlice';
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -102,12 +95,12 @@ const TabsContainerWrapper = styled(Box)(
               }
           }
       }
-  `
+  `,
 );
 
 const tabs = [
   { value: 'entryDoc', label: 'Вхідні документи' },
-  { value: 'sentDoc', label: 'Вихідні документи' }
+  { value: 'sentDoc', label: 'Вихідні документи' },
 ];
 
 const columns: GridColDef[] = [
@@ -131,13 +124,15 @@ const columns: GridColDef[] = [
     sortable: false,
     width: 160,
     valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.recipient.name || ''} ${params.row.recipient.surname || ''}`,
+      `${params.row.recipient.name || ''} ${
+        params.row.recipient.surname || ''
+      }`,
   },
   {
     field: 'documentName',
     headerName: 'Назва документу',
     sortable: false,
-    width: 250, 
+    width: 250,
     valueGetter: (params: GridValueGetterParams) =>
       `${params.row.card.documents[0].fileName || ''}`,
   },
@@ -155,11 +150,13 @@ const columns: GridColDef[] = [
     sortable: false,
     width: 160,
     valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.createdAt}`,
+      `${moment(params.row.createdAt).format('DD-MM-YYYY')}`,
   },
 ];
 function DashboardTasks() {
-	const utils = trpc.useContext();
+  const dispatch = useDispatch();
+  const utils = trpc.useContext();
+  const router = useRouter();
 
   const user = useSelector((state: IApplicationState) => state.userSlice.user);
 
@@ -167,22 +164,27 @@ function DashboardTasks() {
   const [recipientCards, setRecipientCards] = useState<SentCardGridType[]>();
   const [sendedCards, setSendedCards] = useState<SentCardGridType[]>();
 
-
-
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
   };
 
+  const handleRowClick = (param): void => {
+    dispatch(setCard(param.row.id));
+    router.push('/card');
+  };
+
   const fetchRecipientCards = async (): Promise<void> => {
-    const data = await utils.sentCard.recipientCards.fetch({ recipientId: user.id })
+    const data = await utils.sentCard.recipientCards.fetch({
+      recipientId: user.id,
+    });
     setRecipientCards(data);
-  }
+  };
 
   const fetchSendedCards = async (): Promise<void> => {
-    const data = await utils.sentCard.sendedCards.fetch({ senderId: user.id })
+    const data = await utils.sentCard.sendedCards.fetch({ senderId: user.id });
     setSendedCards(data);
-  }
-  
+  };
+
   useEffect(() => {
     if (!recipientCards) {
       void fetchRecipientCards();
@@ -191,7 +193,7 @@ function DashboardTasks() {
       void fetchSendedCards();
     }
   }, []);
-  
+
   return (
     <>
       <Head>
@@ -226,16 +228,24 @@ function DashboardTasks() {
             {currentTab === 'entryDoc' && (
               <>
                 <Grid item xs={12}>
-                <Box p={4}>
-                  <DocumentGrid rows={recipientCards} cols={columns}/>
-                </Box>
+                  <Box p={4}>
+                    <DocumentGrid
+                      rows={recipientCards}
+                      cols={columns}
+                      onRowClick={handleRowClick}
+                    />
+                  </Box>
                 </Grid>
               </>
             )}
             {currentTab === 'sentDoc' && (
               <Grid item xs={12}>
                 <Box p={4}>
-                  <DocumentGrid rows={sendedCards} cols={columns}/>
+                  <DocumentGrid
+                    rows={sendedCards}
+                    cols={columns}
+                    onRowClick={handleRowClick}
+                  />
                 </Box>
               </Grid>
             )}

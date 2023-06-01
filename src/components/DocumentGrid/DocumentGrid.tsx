@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
   
 interface IDocumentGrid {
     rows: any[];
     cols: GridColDef<any>[];
+    onRowClick?: (param) => void;
 }
 
 const DocumentGrid: FC<IDocumentGrid> = (props) => {
@@ -23,6 +24,7 @@ const DocumentGrid: FC<IDocumentGrid> = (props) => {
                 pageSizeOptions={[5]}
                 checkboxSelection
                 disableRowSelectionOnClick
+                onRowClick={props.onRowClick}
             />
         </Box>
     );
