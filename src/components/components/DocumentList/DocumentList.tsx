@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useRef } from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -28,6 +28,7 @@ interface IDocumentList {
 
 const DocumentList: FC<IDocumentList> = (props) => {
   const utils = trpc.useContext();
+  const inputRef = useRef(null);
 
   const [selectedId, setSelectedId] = useState<number>(1);
 
@@ -37,6 +38,19 @@ const DocumentList: FC<IDocumentList> = (props) => {
     },
   });
 
+  const deleteDocument = trpc.files.delete.useMutation({
+    async onSuccess() {
+      await props.refetchCard();
+    },
+  });
+
+  const handleDeleteFile = async (): Promise<void> => {
+    await deleteDocument.mutateAsync({ fileId:selectedId });
+  };
+
+  const handleAddFile = (): void => {
+    inputRef.current.click();
+  };
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     id: number,
@@ -86,7 +100,7 @@ const DocumentList: FC<IDocumentList> = (props) => {
   return (
     <>
       <label htmlFor="file-input">
-        <IconButton aria-label="delete" sx={{ margin: 1 }} size="small">
+        <IconButton aria-label="delete" sx={{ margin: 1 }} size="small" onClick={handleAddFile}>
           <AttachFileIcon fontSize="inherit" />
         </IconButton>
       </label>
@@ -94,8 +108,10 @@ const DocumentList: FC<IDocumentList> = (props) => {
         id="file-input"
         type="file"
         onChange={handleFileInputChange}
+        style={{ display: 'none' }}
+        ref={inputRef}
       />
-      <IconButton aria-label="delete" sx={{ margin: 1 }}>
+      <IconButton aria-label="delete" sx={{ margin: 1 }} onClick={handleDeleteFile}>
         <DeleteIcon fontSize="small" />
       </IconButton>
       <List component="nav" aria-label="secondary mailbox folder">

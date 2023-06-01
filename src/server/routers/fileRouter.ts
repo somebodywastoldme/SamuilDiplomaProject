@@ -1,8 +1,6 @@
 import { router, publicProcedure } from '../trpc';
-import { Prisma } from '@prisma/client';
-import { NEVER, z } from 'zod';
+import { z } from 'zod';
 import { prisma } from '@server//prisma';
-import { TextEncoder } from 'text-encoding';
 export const fileRouter = router({
   create: publicProcedure
     .input(
@@ -20,6 +18,23 @@ export const fileRouter = router({
             fileBody: Buffer.from(input.fileBody, 'utf8'),
             cardId: input.cardId,
           },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }),
+    delete: publicProcedure
+    .input(
+      z.object({
+        fileId: z.number(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      try {
+        await prisma.document.delete({
+          where: {
+            id: input.fileId
+          }
         });
       } catch (e) {
         console.log(e);
