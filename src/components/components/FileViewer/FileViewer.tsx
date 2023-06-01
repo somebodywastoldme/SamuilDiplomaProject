@@ -53,7 +53,7 @@ const FileViewer: FC<IFileViewer> = ({ base64 }) => {
             <div
               style={{
                 border: '1px solid rgba(0, 0, 0, 0.3)',
-                height: '750px',
+                height: '650px',
               }}
             >
               <Viewer fileUrl={url} />
