@@ -23,7 +23,7 @@ export const fileRouter = router({
         console.log(e);
       }
     }),
-    delete: publicProcedure
+  delete: publicProcedure
     .input(
       z.object({
         fileId: z.number(),
@@ -33,8 +33,28 @@ export const fileRouter = router({
       try {
         await prisma.document.delete({
           where: {
-            id: input.fileId
-          }
+            id: input.fileId,
+          },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }),
+  update: publicProcedure
+    .input(
+      z.object({
+        fileId: z.number(),
+        signedHash: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { fileId, signedHash } = input;
+      try {
+        await prisma.document.update({
+          where: { id: fileId },
+          data: {
+            signedHash: Buffer.from(signedHash, 'utf8'),
+          },
         });
       } catch (e) {
         console.log(e);

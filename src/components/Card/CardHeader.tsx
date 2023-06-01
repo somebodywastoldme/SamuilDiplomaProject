@@ -43,6 +43,7 @@ interface ICardHeaderProps {
   selectedAddresser: ICardAddresser;
   sendCard: () => Promise<void>;
   onSelectAddresser: (id: number) => void;
+  singDocument: () => void;
   resultMessage?: string;
 }
 
@@ -52,6 +53,7 @@ const CardHeader: FC<ICardHeaderProps> = ({
   onSelectAddresser,
   selectedAddresser,
   resultMessage,
+  singDocument
 }) => {
   const user = useSelector((state: IApplicationState) => state.userSlice.user);
   const handleChange = (event) => {
@@ -68,6 +70,7 @@ const CardHeader: FC<ICardHeaderProps> = ({
         <Button
           variant="contained"
           startIcon={<KeyIcon />}
+          onClick={singDocument}
         >
           Підписати
         </Button>

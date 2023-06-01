@@ -11,6 +11,7 @@ import Document from '@models/Document';
 import { map } from 'lodash';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import CardHeader, { ICardAddresser } from './CardHeader';
+import FilesSignDialog from './FilesSignDialog';
 
 interface ICardContainer {
   cardId: number;
@@ -26,6 +27,7 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
   const [selectedAddresser, setSelectedAddresser] =
     useState<ICardAddresser>(null);
   const [resultMessage, setResultMessage] = useState<string>(null);
+  const [fileSingOpen, setFileSingOpen] = useState<boolean>(false);
 
 
   const addCard = trpc.sentCard.update.useMutation({
@@ -74,6 +76,14 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
     setSelectedAddresser(docAddresser);
   };
 
+  const singDocument = (): void => {
+    setFileSingOpen(true);
+  };
+
+  const onCloseFilesSignDialog = (doc: Document) => {
+    console.log(doc);
+  }
+
   useEffect(() => {
     if (!card) {
       void fetchCard();
@@ -89,6 +99,7 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
           sendCard={SendCard}
           onSelectAddresser={onSelectAddresser}
           resultMessage={resultMessage}
+          singDocument={singDocument}
         />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -126,6 +137,7 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
           </Grid>
         </Grid>
       </Container>
+      <FilesSignDialog selectedDocument={selectedDocument} open={fileSingOpen} onClose={onCloseFilesSignDialog}/>
     </>
   );
 };

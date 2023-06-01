@@ -8,7 +8,7 @@ export default class Document {
     @Expose() 
     public description: string;
     @Expose() 
-    public fileBody: string;
+    public fileBody: any;
     @Expose() 
     public createdAt: Date;
     @Expose() 
