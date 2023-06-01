@@ -134,7 +134,7 @@ const columns: GridColDef[] = [
     sortable: false,
     width: 250,
     valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.card.documents[0].fileName || ''}`,
+      `${params.row.card.documents[0]?.fileName || ''}`,
   },
   {
     field: 'documentDesciption',
@@ -142,7 +142,7 @@ const columns: GridColDef[] = [
     sortable: false,
     width: 250,
     valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.card.documents[0].description || ''}`,
+      `${params.row.card.documents[0]?.description || ''}`,
   },
   {
     field: 'recive',

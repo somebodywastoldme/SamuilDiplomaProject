@@ -7,39 +7,56 @@ import {
   Avatar,
   styled,
 } from '@mui/material';
-import DocumentScannerTwoToneIcon from '@mui/icons-material/DocumentScannerTwoTone';
-import AddAlertTwoToneIcon from '@mui/icons-material/AddAlertTwoTone';
-import { FC } from 'react';
+import SendIcon from '@mui/icons-material/Send';
+import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IApplicationState } from '@/reducers';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import KeyIcon from '@mui/icons-material/Key';
 
-const AvatarPageTitle = styled(Avatar)(
-  ({ theme }) => `
-        width: ${theme.spacing(8)};
-        height: ${theme.spacing(8)};
-        color: ${theme.colors.primary.main};
-        margin-right: ${theme.spacing(2)};
-        background: ${
-          theme.palette.mode === 'dark'
-            ? theme.colors.alpha.trueWhite[10]
-            : theme.colors.alpha.white[50]
-        };
-        box-shadow: ${
-          theme.palette.mode === 'dark'
-            ? '0 1px 0 ' +
-              alpha(lighten(theme.colors.primary.main, 0.8), 0.2) +
-              ', 0px 2px 4px -3px rgba(0, 0, 0, 0.3), 0px 5px 16px -4px rgba(0, 0, 0, .5)'
-            : '0px 2px 4px -3px ' +
-              alpha(theme.colors.alpha.black[100], 0.4) +
-              ', 0px 5px 16px -4px ' +
-              alpha(theme.colors.alpha.black[100], 0.2)
-        };
-  `,
-);
+const currencies = [
+  {
+    value: 'USD',
+    label: '$',
+  },
+  {
+    value: 'EUR',
+    label: '€',
+  },
+  {
+    value: 'BTC',
+    label: '฿',
+  },
+  {
+    value: 'JPY',
+    label: '¥',
+  },
+];
 
-const CardHeader: FC = () => {
+export interface ICardAddresser {
+  label: string;
+  value: number;
+}
+interface ICardHeaderProps {
+  addresser: ICardAddresser[];
+  selectedAddresser: ICardAddresser;
+  sendCard: () => Promise<void>;
+  onSelectAddresser: (id: number) => void;
+  resultMessage?: string;
+}
+
+const CardHeader: FC<ICardHeaderProps> = ({
+  addresser,
+  sendCard,
+  onSelectAddresser,
+  selectedAddresser,
+  resultMessage,
+}) => {
   const user = useSelector((state: IApplicationState) => state.userSlice.user);
-
+  const handleChange = (event) => {
+    onSelectAddresser(event.target.value);
+  };
   return (
     <Box
       display="flex"
@@ -48,15 +65,50 @@ const CardHeader: FC = () => {
       justifyContent="space-between"
     >
       <Box display="flex" alignItems="center">
-        <Box>
-          <Typography variant="h3" component="h3" gutterBottom>
-            Добрий день, {user.name}!
-          </Typography>
-        </Box>
+        <Button
+          variant="contained"
+          startIcon={<KeyIcon />}
+        >
+          Підписати
+        </Button>
       </Box>
-      <Box mt={{ xs: 3, md: 0 }}>
-        <Button variant="contained" startIcon={<DocumentScannerTwoToneIcon />}>
-          Додати документ
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ gap: '30px' }}
+      >
+        {resultMessage && (
+          <Typography
+            variant="h4"
+            component="h4"
+            gutterBottom
+            sx={{ color: '#57ca22' }}
+          >
+            {resultMessage}!
+          </Typography>
+        )}
+        <TextField
+          id="filled-select-currency"
+          select
+          label="Отримувач"
+          value={selectedAddresser?.value}
+          onChange={handleChange}
+          style={{ width: 200 }}
+        >
+          {addresser.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+        <Button
+          variant="contained"
+          startIcon={<SendIcon />}
+          onClick={sendCard}
+          disabled={!selectedAddresser}
+        >
+          Відправити
         </Button>
       </Box>
     </Box>

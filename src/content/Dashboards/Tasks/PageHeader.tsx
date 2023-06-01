@@ -7,11 +7,15 @@ import {
   Avatar,
   styled
 } from '@mui/material';
+import { trpc } from '@utils/trpc';
 import DocumentScannerTwoToneIcon from '@mui/icons-material/DocumentScannerTwoTone';
 import AddAlertTwoToneIcon from '@mui/icons-material/AddAlertTwoTone';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { IApplicationState } from '@/reducers';
+import { useDispatch } from 'react-redux';
+import { setCard } from 'src/reducers/CardSlice';
+import { useRouter } from 'next/router';
 
 const AvatarPageTitle = styled(Avatar)(
   ({ theme }) => `
@@ -38,7 +42,23 @@ const AvatarPageTitle = styled(Avatar)(
 );
 
 const PageHeader: FC = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const user = useSelector((state: IApplicationState) => state.userSlice.user);
+  const utils = trpc.useContext();
+
+  const addCard = trpc.sentCard.create.useMutation({
+    async onSuccess(data) {
+      dispatch(setCard(data));
+      router.push('/card');
+      console.log(data);
+    },
+  });
+
+  const handleAddCard = async (): Promise<void> => {
+    await addCard.mutateAsync({ userId: user.id, sendingTypeId: 1 });
+  };
 
   return (
     <Box
@@ -55,10 +75,10 @@ const PageHeader: FC = () => {
           <Typography variant="h3" component="h3" gutterBottom>
             Добрий день, {user.name}!
           </Typography>
-        </Box>
+        </Box> 
       </Box>
       <Box mt={{ xs: 3, md: 0 }}>
-        <Button variant="contained" startIcon={<DocumentScannerTwoToneIcon />}>
+        <Button variant="contained" startIcon={<DocumentScannerTwoToneIcon />} onClick={handleAddCard}>
           Додати документ
         </Button>
       </Box>

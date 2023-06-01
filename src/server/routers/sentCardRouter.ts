@@ -48,6 +48,7 @@ const defaultCardSelect = Prisma.validator<Prisma.SentCardSelect>()({
   cardId: true,
   card: {
     select: {
+      description: true,
       documents: {
         select: {
           id: true,
@@ -78,7 +79,14 @@ export const sentCardRouter = router({
     .query(async ({ input }) => {
       const { recipientId } = input;
       const user = await prisma.sentCard.findMany({
-        where: { recipientId },
+        where: {
+          recipientId,
+          sendingTypeId: {
+            not: {
+              in: [4, 2],
+            },
+          },
+        },
         select: gridSentCardSelect,
       });
       return user;
@@ -110,10 +118,75 @@ export const sentCardRouter = router({
           where: { id },
           select: defaultCardSelect,
         });
-        if (!card) {
-          return null;
+        if (card) {
+          return JSON.stringify(card);
         }
-        return JSON.stringify(card);
+        return null;
+      } catch (e) {
+        console.log(e);
+      }
+    }),
+  create: publicProcedure
+    .input(
+      z.object({
+        userId: z.number().int(),
+        sendingTypeId: z.number().int(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { userId, sendingTypeId } = input;
+      try {
+        const card = await prisma.sentCard.create({
+          data: {
+            sender: {
+              connect: {
+                id: userId,
+              },
+            },
+            recipient: {
+              connect: {
+                id: userId,
+              },
+            },
+            card: {
+              create: {
+                userId: userId,
+              },
+            },
+            sendingType: {
+              connect: {
+                id: sendingTypeId,
+              },
+            },
+          },
+          include: {
+            card: true,
+          },
+        });
+        return card.id;
+      } catch (e) {
+        console.log(e);
+      }
+    }),
+  update: publicProcedure
+    .input(
+      z.object({
+        id: z.number().int(),
+        addresserId: z.number().int(),
+        sendingTypeId: z.number().int(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { id, addresserId, sendingTypeId } = input;
+      try {
+        await prisma.sentCard.update({
+          where: { id },
+          data: {
+            sendingTypeId,
+            recipientId: addresserId,
+          },
+        });
+        return card.id;
       } catch (e) {
         console.log(e);
       }

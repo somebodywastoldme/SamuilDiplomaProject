@@ -1,11 +1,5 @@
 import { FC, useState, useEffect } from 'react';
-import {
-  Container,
-  Grid,
-  Card,
-  CardContent,
-  Divider,
-} from '@mui/material';
+import { Container, Grid, Card, CardContent, Divider } from '@mui/material';
 import FileViewer from '../components/FileViewer/FileViewer';
 import { SentCardType } from '@/server/routers/sentCardRouter';
 import { trpc } from '@utils/trpc';
@@ -16,7 +10,7 @@ import DocumentList from '../components/DocumentList/DocumentList';
 import Document from '@models/Document';
 import { map } from 'lodash';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
-import CardHeader from './CardHeader';
+import CardHeader, { ICardAddresser } from './CardHeader';
 
 interface ICardContainer {
   cardId: number;
@@ -28,6 +22,25 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
   const [card, setCard] = useState<SentCardType>(null);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [selectedDocument, setSelectedDocument] = useState<Document>();
+  const [addresser, setAddresser] = useState<ICardAddresser[]>([]);
+  const [selectedAddresser, setSelectedAddresser] =
+    useState<ICardAddresser>(null);
+  const [resultMessage, setResultMessage] = useState<string>(null);
+
+
+  const addCard = trpc.sentCard.update.useMutation({
+    async onSuccess(data) {
+      setResultMessage('Документ відправлено успішно!')
+    },
+  });
+
+  const SendCard = async (): Promise<void> => {
+    await addCard.mutateAsync({
+      id: cardId,
+      addresserId: selectedAddresser.value,
+      sendingTypeId: 1,
+    });
+  };
 
   const fetchCard = async (): Promise<void> => {
     const data = await utils.sentCard.byId.fetch({ id: cardId });
@@ -40,20 +53,43 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
     setCard(result as SentCardType);
   };
 
+  const fetchAddresser = async (): Promise<void> => {
+    const data = await utils.user.list.fetch();
+    const docAddresser = map(data, (el) => {
+      return {
+        label: `${el.name}  ${el.surname}`,
+        value: el.id,
+      } as ICardAddresser;
+    });
+    setAddresser(docAddresser);
+  };
+
   const onSelectDocument = (id: number): void => {
     const doc = documents?.find((el) => el.id === id);
     setSelectedDocument(doc ?? null);
   };
 
+  const onSelectAddresser = (id: number): void => {
+    const docAddresser = addresser?.find((el) => el.value === id);
+    setSelectedAddresser(docAddresser);
+  };
+
   useEffect(() => {
     if (!card) {
       void fetchCard();
+      void fetchAddresser();
     }
   }, [cardId]);
   return (
     <>
-      <PageTitleWrapper>
-        <CardHeader />
+      <PageTitleWrapper padding={20}>
+        <CardHeader
+          addresser={addresser}
+          selectedAddresser={selectedAddresser}
+          sendCard={SendCard}
+          onSelectAddresser={onSelectAddresser}
+          resultMessage={resultMessage}
+        />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -81,7 +117,7 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
                       documents={documents}
                       onSelectDocument={onSelectDocument}
                       refetchCard={fetchCard}
-                      cardId={cardId}
+                      cardId={card?.cardId}
                     />
                   </ReflexElement>
                 </ReflexContainer>
