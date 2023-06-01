@@ -12,7 +12,7 @@ import { map } from 'lodash';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import CardHeader, { ICardAddresser } from './CardHeader';
 import FilesSignDialog from './FilesSignDialog';
-
+import BlockUi from 'react-block-ui';
 interface ICardContainer {
   cardId: number;
 }
@@ -28,11 +28,11 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
     useState<ICardAddresser>(null);
   const [resultMessage, setResultMessage] = useState<string>(null);
   const [fileSingOpen, setFileSingOpen] = useState<boolean>(false);
-
+  const [blockUi, setBlockUi] = useState<boolean>(true);
 
   const addCard = trpc.sentCard.update.useMutation({
     async onSuccess(data) {
-      setResultMessage('Документ відправлено успішно!')
+      setResultMessage('Документ відправлено успішно!');
     },
   });
 
@@ -82,7 +82,7 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
 
   const onCloseFilesSignDialog = (doc: Document) => {
     console.log(doc);
-  }
+  };
 
   useEffect(() => {
     if (!card) {
@@ -90,54 +90,69 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
       void fetchAddresser();
     }
   }, [cardId]);
+
+  useEffect(() => {
+    if (card && documents) {
+      setBlockUi(false);
+    }
+  }, [card, documents]);
+  
   return (
     <>
-      <PageTitleWrapper padding={20}>
-        <CardHeader
-          addresser={addresser}
-          selectedAddresser={selectedAddresser}
-          sendCard={SendCard}
-          onSelectAddresser={onSelectAddresser}
-          resultMessage={resultMessage}
-          singDocument={singDocument}
-        />
-      </PageTitleWrapper>
-      <Container maxWidth="lg">
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          spacing={3}
-          sx={{ height: '100%' }}
-        >
-          <Grid item xl={12}>
-            <Card>
-              <Divider />
-              <CardContent>
-                <ReflexContainer orientation="vertical">
-                  <ReflexElement className="left-pane">
-                    <FileViewer
-                      base64={
-                        selectedDocument?.fileBody ?? 'YXNkYXNkYXNkYXFzZGFzZHM='
-                      }
-                    />
-                  </ReflexElement>
-                  <ReflexSplitter />
-                  <ReflexElement className="right-pane">
-                    <DocumentList
-                      documents={documents}
-                      onSelectDocument={onSelectDocument}
-                      refetchCard={fetchCard}
-                      cardId={card?.cardId}
-                    />
-                  </ReflexElement>
-                </ReflexContainer>
-              </CardContent>
-            </Card>
+      <BlockUi tag="div" blocking={blockUi}>
+        <PageTitleWrapper padding={20}>
+          <CardHeader
+            addresser={addresser}
+            selectedAddresser={selectedAddresser}
+            sendCard={SendCard}
+            onSelectAddresser={onSelectAddresser}
+            resultMessage={resultMessage}
+            singDocument={singDocument}
+            selectedDocument={selectedDocument}
+          />
+        </PageTitleWrapper>
+        <Container maxWidth="lg">
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            spacing={3}
+            sx={{ height: '100%' }}
+          >
+            <Grid item xl={12}>
+              <Card>
+                <Divider />
+                <CardContent>
+                  <ReflexContainer orientation="vertical">
+                    <ReflexElement className="left-pane">
+                      <FileViewer
+                        base64={
+                          selectedDocument?.fileBody ??
+                          'YXNkYXNkYXNkYXFzZGFzZHM='
+                        }
+                      />
+                    </ReflexElement>
+                    <ReflexSplitter />
+                    <ReflexElement className="right-pane">
+                      <DocumentList
+                        documents={documents}
+                        onSelectDocument={onSelectDocument}
+                        refetchCard={fetchCard}
+                        cardId={card?.cardId}
+                      />
+                    </ReflexElement>
+                  </ReflexContainer>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
-      <FilesSignDialog selectedDocument={selectedDocument} open={fileSingOpen} onClose={onCloseFilesSignDialog}/>
+        </Container>
+        <FilesSignDialog
+          selectedDocument={selectedDocument}
+          open={fileSingOpen}
+          onClose={onCloseFilesSignDialog}
+        />
+      </BlockUi>
     </>
   );
 };

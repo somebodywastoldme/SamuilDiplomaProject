@@ -14,7 +14,7 @@ import { IApplicationState } from '@/reducers';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import KeyIcon from '@mui/icons-material/Key';
-
+import Document from '@models/Document';
 const currencies = [
   {
     value: 'USD',
@@ -45,6 +45,7 @@ interface ICardHeaderProps {
   onSelectAddresser: (id: number) => void;
   singDocument: () => void;
   resultMessage?: string;
+  selectedDocument:Document;
 }
 
 const CardHeader: FC<ICardHeaderProps> = ({
@@ -53,7 +54,8 @@ const CardHeader: FC<ICardHeaderProps> = ({
   onSelectAddresser,
   selectedAddresser,
   resultMessage,
-  singDocument
+  singDocument,
+  selectedDocument
 }) => {
   const user = useSelector((state: IApplicationState) => state.userSlice.user);
   const handleChange = (event) => {
@@ -71,6 +73,7 @@ const CardHeader: FC<ICardHeaderProps> = ({
           variant="contained"
           startIcon={<KeyIcon />}
           onClick={singDocument}
+          disabled={!selectedDocument}
         >
           Підписати
         </Button>
