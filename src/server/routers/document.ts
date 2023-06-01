@@ -43,18 +43,5 @@
 //       }
 //       return document;
 //     })
-// //   create: publicProcedure
-// //     .input(
-// //       z.object({
-// //         title: z.string().min(1).max(32),
-// //         documentBody: z.string(),
-// //       }),
-// //     )
-// //     .mutation(async ({ input }) => {
-// //       const document = await prisma.document.create({
-// //         data: input,
-// //         select: defaultDocumentSelect,
-// //       });
-// //       return document;
-// //     }),
+  
 // });

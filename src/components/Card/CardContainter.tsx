@@ -6,7 +6,6 @@ import {
   CardContent,
   Divider,
 } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import FileViewer from '../components/FileViewer/FileViewer';
 import { SentCardType } from '@/server/routers/sentCardRouter';
 import { trpc } from '@utils/trpc';
@@ -81,6 +80,8 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
                     <DocumentList
                       documents={documents}
                       onSelectDocument={onSelectDocument}
+                      refetchCard={fetchCard}
+                      cardId={cardId}
                     />
                   </ReflexElement>
                 </ReflexContainer>

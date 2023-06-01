@@ -20,7 +20,7 @@ const FileViewer: FC<IFileViewer> = ({ base64 }) => {
   const [url, setUrl] = useState<string>('');
   const base64toBlob = (data: any) => {
     const blobData = Buffer.from(data, 'binary');
-    const base64WithoutPrefix = blobData.toString('utf-8');
+    const base64WithoutPrefix = blobData.toString('utf-8').replace('data:application/pdf;base64,', '');
 
     const bytes = atob(base64WithoutPrefix);
     let length = bytes.length;
