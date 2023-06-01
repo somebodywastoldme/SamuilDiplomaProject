@@ -2,10 +2,6 @@ import {
   Typography,
   Button,
   Box,
-  alpha,
-  lighten,
-  Avatar,
-  styled,
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { FC, useState } from 'react';
@@ -15,24 +11,6 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import KeyIcon from '@mui/icons-material/Key';
 import Document from '@models/Document';
-const currencies = [
-  {
-    value: 'USD',
-    label: '$',
-  },
-  {
-    value: 'EUR',
-    label: '€',
-  },
-  {
-    value: 'BTC',
-    label: '฿',
-  },
-  {
-    value: 'JPY',
-    label: '¥',
-  },
-];
 
 export interface ICardAddresser {
   label: string;
