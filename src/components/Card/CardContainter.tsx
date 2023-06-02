@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useMemo } from 'react';
 import { Container, Grid, Card, CardContent, Divider } from '@mui/material';
 import FileViewer from '../components/FileViewer/FileViewer';
 import { SentCardType } from '@/server/routers/sentCardRouter';
@@ -55,7 +55,7 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
     setDocuments(docs);
     setCard(result as SentCardType);
   };
-  
+
 
   const fetchAddresser = async (): Promise<void> => {
     const data = await utils.user.list.fetch();
@@ -98,7 +98,7 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
       setBlockUi(false);
     }
   }, [card, documents]);
-  
+
   return (
     <>
       <BlockUi tag="div" blocking={blockUi}>

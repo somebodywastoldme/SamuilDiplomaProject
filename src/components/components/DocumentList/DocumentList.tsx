@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef } from 'react';
+import { FC, useState, useEffect, useRef, useMemo } from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -81,7 +81,7 @@ const DocumentList: FC<IDocumentList> = (props) => {
       reader.readAsDataURL(file);
     }
   };
-  const handleDownload = (): void => {
+  const handleDownloadSign = (): void => {
     const doc = props.documents.find((el) => el.id === selectedId);
     const downloadUrl = URL.createObjectURL(new Blob([doc.signedHash.data]));
     const link = document.createElement('a');
@@ -98,6 +98,10 @@ const DocumentList: FC<IDocumentList> = (props) => {
     props.onSelectDocument(doc?.id);
   }, [props.documents]);
 
+  const enabledDownloadSign = useMemo(() => {
+    const doc = props.documents.find((el) => el.id === selectedId);
+    return doc?.signedHash ? true : false;
+  }, [selectedId])
   const getDocumentItem = (doc: Document): JSX.Element => {
     return (
       <ListItemButton
@@ -139,7 +143,8 @@ const DocumentList: FC<IDocumentList> = (props) => {
         aria-label="delete"
         sx={{ margin: 1 }}
         size="small"
-        onClick={handleDownload}
+        onClick={handleDownloadSign}
+        disabled={!enabledDownloadSign}
       >
         <FileDownloadIcon fontSize="inherit" />
       </IconButton>
