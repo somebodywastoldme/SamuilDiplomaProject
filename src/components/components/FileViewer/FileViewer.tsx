@@ -11,12 +11,12 @@ import { Worker } from '@react-pdf-viewer/core';
 import { Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 
-interface IFileViewer {
+export interface IFileViewer {
   base64: any;
 }
 
 const FileViewer: FC<IFileViewer> = ({ base64 }) => {
-  const [url, setUrl] = useState<string>('');
+  const [url, setUrl] = useState<string>(null);
   const base64toBlob = (data: any) => {
     const blobData = Buffer.from(data, 'binary');
     const base64WithoutPrefix = blobData.toString('utf-8').replace('data:application/pdf;base64,', '');

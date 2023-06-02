@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { trpc } from '@utils/trpc';
 
-interface IDocumentList {
+export interface IDocumentList {
   cardId: number;
   documents: Document[];
   onSelectDocument: (id: number) => void;

@@ -14,7 +14,7 @@ import { plainToClass } from 'class-transformer';
 import 'react-block-ui/style.css';
 import BlockUi from 'react-block-ui';
 
-interface IFilesSignDialogProps {
+export interface IFilesSignDialogProps {
   selectedDocument: Document;
   open: boolean;
   onClose: (doc: Document) => void;

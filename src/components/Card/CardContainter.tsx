@@ -14,7 +14,7 @@ import CardHeader, { ICardAddresser } from './CardHeader';
 import FilesSignDialog from './FilesSignDialog';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-interface ICardContainer {
+export interface ICardContainer {
   cardId: number;
 }
 
@@ -84,6 +84,7 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
 
   const onCloseFilesSignDialog = (doc: Document) => {
     setFileSingOpen(false);
+    void fetchCard();
   };
 
   useEffect(() => {

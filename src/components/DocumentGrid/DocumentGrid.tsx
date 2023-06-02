@@ -2,7 +2,7 @@ import { FC } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
   
-interface IDocumentGrid {
+export interface IDocumentGrid {
     rows: any[];
     cols: GridColDef<any>[];
     onRowClick?: (param) => void;
