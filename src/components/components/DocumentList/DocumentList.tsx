@@ -7,6 +7,7 @@ import Document from '@models/Document';
 import { map, first } from 'lodash';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import {
   Button,
   Container,
@@ -45,7 +46,7 @@ const DocumentList: FC<IDocumentList> = (props) => {
   });
 
   const handleDeleteFile = async (): Promise<void> => {
-    await deleteDocument.mutateAsync({ fileId:selectedId });
+    await deleteDocument.mutateAsync({ fileId: selectedId });
   };
 
   const handleAddFile = (): void => {
@@ -80,6 +81,17 @@ const DocumentList: FC<IDocumentList> = (props) => {
       reader.readAsDataURL(file);
     }
   };
+  const handleDownload = (): void => {
+    const doc = props.documents.find((el) => el.id === selectedId);
+    const downloadUrl = URL.createObjectURL(new Blob([doc.signedHash.data]));
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.setAttribute('download', `${doc.fileName}.p7s`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(downloadUrl);
+  };
 
   useEffect(() => {
     const doc = first(props.documents);
@@ -100,7 +112,12 @@ const DocumentList: FC<IDocumentList> = (props) => {
   return (
     <>
       <label htmlFor="file-input">
-        <IconButton aria-label="delete" sx={{ margin: 1 }} size="small" onClick={handleAddFile}>
+        <IconButton
+          aria-label="delete"
+          sx={{ margin: 1 }}
+          size="small"
+          onClick={handleAddFile}
+        >
           <AttachFileIcon fontSize="inherit" />
         </IconButton>
       </label>
@@ -111,8 +128,20 @@ const DocumentList: FC<IDocumentList> = (props) => {
         style={{ display: 'none' }}
         ref={inputRef}
       />
-      <IconButton aria-label="delete" sx={{ margin: 1 }} onClick={handleDeleteFile}>
+      <IconButton
+        aria-label="delete"
+        sx={{ margin: 1 }}
+        onClick={handleDeleteFile}
+      >
         <DeleteIcon fontSize="small" />
+      </IconButton>
+      <IconButton
+        aria-label="delete"
+        sx={{ margin: 1 }}
+        size="small"
+        onClick={handleDownload}
+      >
+        <FileDownloadIcon fontSize="inherit" />
       </IconButton>
       <List component="nav" aria-label="secondary mailbox folder">
         {map(props.documents, getDocumentItem)}

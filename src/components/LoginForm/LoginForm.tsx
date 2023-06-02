@@ -35,7 +35,7 @@ const LoginForm: FC = () => {
 	return(
 		<div className='loginContainer'>
 			<Container component="main" maxWidth="xs">
-				<h2 style={{textAlign: 'center'}}>Сисема електронного документо обігу</h2>
+				<h2 style={{textAlign: 'center', textWrap: 'balance'}}>Сисема електронного документообігу</h2>
 				<Box
 					sx={{
 						marginTop: 8,

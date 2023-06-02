@@ -10,6 +10,8 @@ export default class Document {
     @Expose() 
     public fileBody: any;
     @Expose() 
+    public signedHash: any;
+    @Expose() 
     public createdAt: Date;
     @Expose() 
     public updatedAt: Date;

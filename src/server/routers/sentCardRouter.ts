@@ -55,6 +55,7 @@ const defaultCardSelect = Prisma.validator<Prisma.SentCardSelect>()({
           fileName: true,
           description: true,
           fileBody: true,
+          signedHash: true
         },
       },
     },

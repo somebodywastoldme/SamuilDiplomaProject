@@ -55,6 +55,7 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
     setDocuments(docs);
     setCard(result as SentCardType);
   };
+  
 
   const fetchAddresser = async (): Promise<void> => {
     const data = await utils.user.list.fetch();
