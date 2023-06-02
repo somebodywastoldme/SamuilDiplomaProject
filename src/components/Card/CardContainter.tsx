@@ -56,7 +56,6 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
     setCard(result as SentCardType);
   };
 
-
   const fetchAddresser = async (): Promise<void> => {
     const data = await utils.user.list.fetch();
     const docAddresser = map(data, (el) => {
@@ -128,12 +127,7 @@ const CardContainer: FC<ICardContainer> = ({ cardId }) => {
                 <CardContent>
                   <ReflexContainer orientation="vertical">
                     <ReflexElement className="left-pane">
-                      <FileViewer
-                        base64={
-                          selectedDocument?.fileBody ??
-                          'YXNkYXNkYXNkYXFzZGFzZHM='
-                        }
-                      />
+                      <FileViewer base64={selectedDocument?.fileBody} />
                     </ReflexElement>
                     <ReflexSplitter />
                     <ReflexElement className="right-pane">
